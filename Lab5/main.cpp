@@ -1,83 +1,56 @@
 #include <iostream>
+#include <string>
 
 int main() {
 
-  // char text1[] = "We are learning";
-  // char word[] = "hi";
+ 
+  std::cout << "\n************************************\n";
+  std::cout << "Hi! Enter your full name: ";
 
-  // for (int n = 0; n < 11; n++) {
-  //   *(text1 + n) = *(word + n);
-  // }
-  // printf("%s", text1);
+  std::string fullName, first, second, third;
+  int i(0), skip(0);
 
-  // char text[30];
+  std::getline(std::cin, fullName);
 
-  // scanf("%s", text);
-  // printf("%s\n", text);
-
-  // char * gets(char * str);
-  // int puts(const char *str); // deprecated
-
-  // char * fgets(char * str, int num, FILE * stream);
-  // int fputs(const char * str, FILE * stream);
-
-  printf("\n**********************************************\n");
-  printf("Hi! Enter your full name: ");
-
-  char fullName[256];
-  int i(0);
-  // int first(0), second(0), third(0);
-  char first[256], second[256], third[256];
-  char ch;
-  int spaces(0);
-  int skip(0);
-
-  while ((ch = getchar()) != '\n'&& ch != EOF && i < 256) {
-    // if (ch == *" ") {
-    //   spaces++;
-    // }
-    fullName[i++] = ch;
-    if (ch == *" ") {
+  for (i = 0; i < fullName.length(); i++) {
+    if (fullName[i] == ' ') {
       skip++;
+      continue;
     }
     if (skip == 0) {
-      first[i] = ch;
-    } else if (skip == 1) {
-      second[i] = ch;
-    } else if (skip == 2) {
-      third[i] = ch;
+      first += fullName[i];
+    } 
+    if (skip == 1) {
+      second += fullName[i];
+    } 
+    if (skip == 2) {
+      third += fullName[i];
     }
   }
-  fullName[i] = '\0';
 
-  if (strlen(first) > strlen(second) && strlen(first) > strlen(third)) {
-    printf("%s", first);
-  } else if (strlen(second) > strlen(third)) {
-    printf("%s", second);
-  } else {
-    printf("%s", third);
-  }
+  std::cout << first.length() << " " << second.length() << " " << third.length() << std::endl;
 
-  // printf("%s\n", fullName);
-  // int longestPos = 0;
-  // char *p = strtok(fullName, " ");
+  if (first.length() > second.length() && first.length() > third.length()) {
+    std::cout << first << std::endl;
+  } else if (second.length() > third.length()) {
+    std::cout << second << std::endl;
+  } else if (third.length() > second.length()) {
+    std::cout << third << std::endl;
+  } else if (first.length() == second.length()) {
+    if (first.length() == third.length()) {
+      std::cout << first << " " << second << " " << third << std::endl;
+    } else {
+      std::cout << first << " " << second << std::endl;
+    }
+  } else if (first.length() == third.length() && first.length() != second.length()) {
+    std::cout << first << " " << third << std::endl;
+  } else if (second.length() == third.length() && first.length() != second.length()) {
+    std::cout << second << " " << third << std::endl;
+  } 
 
-  // for (i = 0; i < strlen(fullName); i++) {
-  //   p = strtok(NULL, " ");
-
-  // }
+  std::cout << "************************************\n\n";
 
   
-
-  // std::tuple<int, char> first;
-  // std::tuple<int, char> second;
-  // std::tuple<int, char> third;
-
-  // for (i = 0; i < strlen(fullName); i++) {
-  //   if (fullName[i] != *(" ")) {
-  //     i++;
-  //   } 
-  // }
 
   return 0;
 }
