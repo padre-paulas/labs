@@ -1,16 +1,15 @@
 #include <iostream>
-#define _CRT_SECURE_NO_WARNINGS
 
 
 int main() {
 
-  char cat[20] = "cat";
+  char *string = new char[256];
+ 
+  fgets(string, 256, stdin);
+  fputs(string, stdout);
 
-  char *str;
+  delete[] string;
 
-  str = cat;
-
-  std::cout << *str << std::endl;
 
   return 0;
 }
