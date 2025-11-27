@@ -24,8 +24,6 @@ char* getSentence() {
 
 void sortWords(char *sentence) {
 
-  std::cout << "well well well\n";
-
   char *words[256];
   int w = 0, ch = 0;
   int longestWord = 0;
@@ -48,7 +46,7 @@ void sortWords(char *sentence) {
   if (ch > 0) {
     words[w][ch] = '\0';
   }
-  
+
   char *temp;
 
   for (int i = 0; i < w; i++) {
@@ -61,11 +59,15 @@ void sortWords(char *sentence) {
     }
   }
 
+  fputs("\n", stdout);
+
   for (int i = 0; i < w; i++) {
     fputs(words[i], stdout);
     fputs("\n", stdout);
     delete[] words[i];
   }
+
+  fputs("\n", stdout);
 
   delete[] sentence;
 }
