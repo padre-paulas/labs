@@ -26,7 +26,6 @@ void sortWords(char *sentence) {
 
   char *words[256];
   int w = 0, ch = 0;
-  int longestWord = 0;
 
   words[w] = new char[256];
 
