@@ -48,6 +48,7 @@ void sortWords(char *sentence) {
   if (ch > 0) {
     words[w][ch] = '\0';
   }
+  
   char *temp;
 
   for (int i = 0; i < w; i++) {

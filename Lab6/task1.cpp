@@ -3,8 +3,6 @@
 bool checkString();
 
 int main() {
-
-
   fputs("\nThis programming checks for double letters.\nEnter a string: ", stdout);
   bool result = checkString();
   result ? fputs("Your string has double letters.\n\n", stdout) :
@@ -17,6 +15,7 @@ bool checkString() {
   char *string = new char[256];
  
   fgets(string, 256, stdin);
+  
   int len = strlen(string) - 1;
 
   for (int i = 0; i < len; i++) {
