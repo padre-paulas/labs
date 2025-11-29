@@ -14,8 +14,7 @@ int main() {
 std::pair<int, int> readText() {
   std::fstream f1;
   int lineCount = 1, paragraphCount = 1;
-  char ch;
-  char previous = '\0';
+  char previous = '\0', ch;
   std::string fileName = getFileName();
 
   f1.open(fileName, std::ios::in);
@@ -26,7 +25,6 @@ std::pair<int, int> readText() {
   }
 
   while (f1.get(ch)) {
-
     if (ch == '\n') {
       lineCount++;
     }
