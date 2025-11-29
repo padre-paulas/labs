@@ -20,7 +20,7 @@ std::pair<int, int> readText() {
   f1.open(fileName, std::ios::in);
 
   if (!f1) {
-    std::cout << "Couldn't access the file\n";
+    std::cout << "\nCouldn't access the file\n\n";
     return { -1, -1 };
   }
 
