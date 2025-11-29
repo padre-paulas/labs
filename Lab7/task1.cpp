@@ -4,16 +4,18 @@ std::pair<double, double> getInterval();
 double calculateIntegral(
   std::pair<double, double> interval,
   int step,
-  double x
+  double x,
+  int accuracy
 );
 double calculateFormula(double x, double deltaX);
+int getAccuracy();
 void printResult(double result);
 
 int main() {
 
   printResult(
     calculateIntegral(
-      getInterval(), 0, getInterval().first
+      getInterval(), 0, getInterval().first, getAccuracy()
     )
   );
 
@@ -30,11 +32,12 @@ std::pair<double, double> getInterval() {
 double calculateIntegral(
   std::pair<double, double> interval,
   int step,
-  double x
+  double x,
+  int accuracy
 ) {
   double lowX = interval.first;
   double highX = interval.second;
-  int accuracy = 10000;
+
   double deltaX = abs(highX - lowX) / accuracy;
 
   if (x == lowX) {
@@ -44,7 +47,7 @@ double calculateIntegral(
   if (step == accuracy - 1) {
     return calculateFormula(x, deltaX);
   } else {
-    return calculateIntegral(interval, ++step, x + deltaX) +
+    return calculateIntegral(interval, ++step, x + deltaX, accuracy) +
     calculateFormula(x, deltaX);
   }
 }
@@ -52,6 +55,13 @@ double calculateIntegral(
 double calculateFormula(double x, double deltaX) {
   return deltaX * (7 * pow(x, 3) - pow(x, 2) + 3 * x + 2);
 };
+
+int getAccuracy() {
+  int accuracy = 0;
+  std::cout << "\nEnter an int value for how many summands should there be: ";
+  std::cin >> accuracy;
+  return accuracy;
+}
 
 void printResult(double result) {
   std::cout << "\nResult: " << result << std::endl << std::endl;
