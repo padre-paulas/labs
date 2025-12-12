@@ -15,5 +15,7 @@ void readFile() {
 
   fs.open(fileName, std::ios::in);
 
+  fs.close();
+
 }
 
