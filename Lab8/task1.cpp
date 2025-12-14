@@ -2,6 +2,7 @@
 #include <fstream>
 
 void readFile();
+void calculateAverage();
 
 int main() {
 
@@ -17,5 +18,12 @@ void readFile() {
 
   fs.close();
 
+}
+
+void calculateAverage() {
+  struct Student {
+    std::string lastName;
+    int grade1, grade2, grade3, grade4;
+  };
 }
 
