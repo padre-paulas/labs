@@ -1,11 +1,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 void readFile();
 void addOrder();
 void searchOrders();
 void printOrders();
+void modifyOrder();
+void deleteOrder();
+void sortOrders();
+void optionSwitch();
+void saveToFile();
 
 struct Order
 {
@@ -16,14 +22,23 @@ struct Order
   std::string date;
   double price;
 };
+
 std::vector<Order> orders;
 
 int main()
 {
-
   readFile();
-  addOrder();
-  optionSwitch();
+  
+  while (true)
+  {
+    optionSwitch();
+    
+    char cont;
+    std::cout << "\nContinue? (y/n): ";
+    std::cin >> cont;
+    if (cont != 'y' && cont != 'Y')
+      break;
+  }
 
   return 0;
 }
@@ -35,7 +50,7 @@ void readFile()
 
   if (!file)
   {
-    std::cout << "File not found\n";
+    std::cout << "No existing orders file found. Starting fresh.\n";
     return;
   }
 
@@ -46,9 +61,27 @@ void readFile()
     orders.push_back(ord);
   }
 
-  for (const Order &o : orders)
+  std::cout << "Loaded " << orders.size() << " orders from file.\n\n";
+}
+
+void saveToFile()
+{
+  std::ofstream file("order.txt");
+  
+  if (!file)
   {
-    std::cout << o.client << std::endl;
+    std::cout << "Error: Could not save to file\n";
+    return;
+  }
+
+  for (const Order &ord : orders)
+  {
+    file << ord.client << " "
+         << ord.language << " "
+         << ord.pageQuantity << " "
+         << ord.translator << " "
+         << ord.date << " "
+         << ord.price << '\n';
   }
 }
 
@@ -56,8 +89,15 @@ void optionSwitch()
 {
   int option;
 
-  std::cout << "What would you like to do?" << std::endl;
-  std::cout << "1 - add new order\n2 - search for an order\n3 - list the orders\n4 - modify order\n5 - delete order\n6 - sort orders" << std::endl;
+  std::cout << "\n=== ORDER MANAGEMENT SYSTEM ===\n";
+  std::cout << "What would you like to do?\n";
+  std::cout << "1 - Add new order\n";
+  std::cout << "2 - Search for an order\n";
+  std::cout << "3 - List all orders\n";
+  std::cout << "4 - Modify order\n";
+  std::cout << "5 - Delete order\n";
+  std::cout << "6 - Sort orders\n";
+  std::cout << "Choice: ";
 
   std::cin >> option;
 
@@ -82,16 +122,15 @@ void optionSwitch()
     sortOrders();
     break;
   default:
-    std::cout << "Invalid!\n";
+    std::cout << "Invalid option!\n";
   }
 }
 
 void addOrder()
 {
-  std::ofstream file("order.txt", std::ios::app);
-
   Order ord;
 
+  std::cout << "\n--- Add New Order ---\n";
   std::cout << "Enter client name: ";
   std::cin >> ord.client;
   std::cout << "Enter language: ";
@@ -100,21 +139,37 @@ void addOrder()
   std::cin >> ord.pageQuantity;
   std::cout << "Enter translator name: ";
   std::cin >> ord.translator;
-  std::cout << "Enter date: ";
+  std::cout << "Enter date (YYYY-MM-DD): ";
   std::cin >> ord.date;
   std::cout << "Enter price: ";
   std::cin >> ord.price;
 
-  file << " " << ord.client << " " << ord.language << " " << ord.pageQuantity << " " << ord.translator << " " << ord.date << " " << ord.price;
+  orders.push_back(ord);
+  saveToFile();
+  
+  std::cout << "Order added successfully!\n";
 }
 
 void searchOrders()
 {
+  if (orders.empty())
+  {
+    std::cout << "No orders available\n";
+    return;
+  }
+
   int option;
   bool found = false;
 
-  std::cout << "What would you like to search by?\n";
-  std::cout << "1 - client name\n2 - language\n3 - page quantity\n4 - translator name\n5 - date\n6 - price\n";
+  std::cout << "\n--- Search Orders ---\n";
+  std::cout << "Search by:\n";
+  std::cout << "1 - Client name\n";
+  std::cout << "2 - Language\n";
+  std::cout << "3 - Page quantity\n";
+  std::cout << "4 - Translator name\n";
+  std::cout << "5 - Date\n";
+  std::cout << "6 - Price\n";
+  std::cout << "Choice: ";
 
   std::cin >> option;
 
@@ -126,12 +181,13 @@ void searchOrders()
     std::cout << "Enter client name: ";
     std::cin >> value;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.client == value)
+      if (orders[i].client == value)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -144,12 +200,13 @@ void searchOrders()
     std::cout << "Enter language: ";
     std::cin >> value;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.language == value)
+      if (orders[i].language == value)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -162,12 +219,13 @@ void searchOrders()
     std::cout << "Enter page quantity: ";
     std::cin >> pages;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.pageQuantity == pages)
+      if (orders[i].pageQuantity == pages)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -180,12 +238,13 @@ void searchOrders()
     std::cout << "Enter translator name: ";
     std::cin >> value;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.translator == value)
+      if (orders[i].translator == value)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -198,12 +257,13 @@ void searchOrders()
     std::cout << "Enter date: ";
     std::cin >> value;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.date == value)
+      if (orders[i].date == value)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -216,12 +276,13 @@ void searchOrders()
     std::cout << "Enter price: ";
     std::cin >> price;
 
-    for (const Order &o : orders)
+    for (size_t i = 0; i < orders.size(); i++)
     {
-      if (o.price == price)
+      if (orders[i].price == price)
       {
-        std::cout << o.client << " " << o.language << " " << o.pageQuantity
-                  << " " << o.translator << " " << o.date << " " << o.price << '\n';
+        std::cout << "\n[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+                  << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+                  << orders[i].date << " | $" << orders[i].price << '\n';
         found = true;
       }
     }
@@ -241,14 +302,19 @@ void searchOrders()
 
 void printOrders()
 {
-  std::ifstream file("order.txt");
-  std::string output;
-
-  while (file >> output)
+  if (orders.empty())
   {
-    std::cout << output;
+    std::cout << "No orders to display\n";
+    return;
   }
-  std::cout << std::endl;
+
+  std::cout << "\n=== ALL ORDERS ===\n";
+  for (size_t i = 0; i < orders.size(); i++)
+  {
+    std::cout << "[" << (i + 1) << "] " << orders[i].client << " | " << orders[i].language << " | " 
+              << orders[i].pageQuantity << " pages | " << orders[i].translator << " | " 
+              << orders[i].date << " | $" << orders[i].price << '\n';
+  }
 }
 
 void modifyOrder()
@@ -259,26 +325,29 @@ void modifyOrder()
     return;
   }
 
+  printOrders();
+
   int index;
-  std::cout << "Enter order number (starting from 1): ";
+  std::cout << "\nEnter order number to modify: ";
   std::cin >> index;
 
-  if (index < 1 || index > orders.size())
+  if (index < 1 || index > static_cast<int>(orders.size()))
   {
     std::cout << "Invalid order number\n";
     return;
   }
 
-  Order &o = orders[index - 1]; // reference to real order
+  Order &o = orders[index - 1];
 
   int option;
-  std::cout << "What would you like to modify?\n";
-  std::cout << "1 - client name\n"
-            << "2 - language\n"
-            << "3 - page quantity\n"
-            << "4 - translator name\n"
-            << "5 - date\n"
-            << "6 - price\n";
+  std::cout << "\nWhat would you like to modify?\n";
+  std::cout << "1 - Client name\n";
+  std::cout << "2 - Language\n";
+  std::cout << "3 - Page quantity\n";
+  std::cout << "4 - Translator name\n";
+  std::cout << "5 - Date\n";
+  std::cout << "6 - Price\n";
+  std::cout << "Choice: ";
 
   std::cin >> option;
 
@@ -313,30 +382,99 @@ void modifyOrder()
     return;
   }
 
-  std::ofstream file("order.txt");
-  for (const Order &ord : orders)
+  saveToFile();
+  std::cout << "Order updated successfully!\n";
+}
+
+void deleteOrder()
+{
+  if (orders.empty())
   {
-    file << ord.client << " "
-         << ord.language << " "
-         << ord.pageQuantity << " "
-         << ord.translator << " "
-         << ord.date << " "
-         << ord.price << '\n';
+    std::cout << "No orders to delete\n";
+    return;
   }
 
-  std::cout << "Order updated successfully\n";
+  printOrders();
+
+  int index;
+  std::cout << "\nEnter order number to delete: ";
+  std::cin >> index;
+
+  if (index < 1 || index > static_cast<int>(orders.size()))
+  {
+    std::cout << "Invalid order number\n";
+    return;
+  }
+
+  char confirm;
+  std::cout << "Are you sure you want to delete this order? (y/n): ";
+  std::cin >> confirm;
+
+  if (confirm == 'y' || confirm == 'Y')
+  {
+    orders.erase(orders.begin() + index - 1);
+    saveToFile();
+    std::cout << "Order deleted successfully!\n";
+  }
+  else
+  {
+    std::cout << "Deletion cancelled\n";
+  }
 }
 
-void deleteOrder() {
+void sortOrders()
+{
+  if (orders.empty())
+  {
+    std::cout << "No orders to sort\n";
+    return;
+  }
 
-}
+  int option;
+  std::cout << "\n--- Sort Orders ---\n";
+  std::cout << "Sort by:\n";
+  std::cout << "1 - Client name\n";
+  std::cout << "2 - Language\n";
+  std::cout << "3 - Page quantity\n";
+  std::cout << "4 - Translator name\n";
+  std::cout << "5 - Date\n";
+  std::cout << "6 - Price\n";
+  std::cout << "Choice: ";
 
-void sortOrders() {
-  std::cout << "What would you like to sort by?\n";
-  std::cout << "1 - client name\n"
-            << "2 - language\n"
-            << "3 - page quantity\n"
-            << "4 - translator name\n"
-            << "5 - date\n"
-            << "6 - price\n";
+  std::cin >> option;
+
+  switch (option)
+  {
+  case 1:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.client < b.client; });
+    break;
+  case 2:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.language < b.language; });
+    break;
+  case 3:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.pageQuantity < b.pageQuantity; });
+    break;
+  case 4:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.translator < b.translator; });
+    break;
+  case 5:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.date < b.date; });
+    break;
+  case 6:
+    std::sort(orders.begin(), orders.end(), 
+              [](const Order &a, const Order &b) { return a.price < b.price; });
+    break;
+  default:
+    std::cout << "Invalid option\n";
+    return;
+  }
+
+  saveToFile();
+  std::cout << "Orders sorted successfully!\n";
+  printOrders();
 }
