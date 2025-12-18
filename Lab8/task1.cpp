@@ -21,8 +21,6 @@ int main() {
   return 0;
 }
 
-
-
 void readFile() {
   std::ifstream file("student.txt");
   std::vector<Student> students;
