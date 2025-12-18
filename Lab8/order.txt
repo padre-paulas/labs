@@ -1,0 +1,10 @@
+Jones English 12 Petrenko 2024-11-20 1800.50
+Shevchenko German 8 Müller 2024-11-18 1320.00
+Koval French 15 Dubois 2024-11-22 2400.75
+Martinez Spanish 540 Garcia 2024-11-19 800.00
+Thunoda Polish 100 Kowalski 2024-11-21 1500.00
+Brown Italian 7 Rossi 2024-11-23 1050.00
+Hrytsenko Ukrainian 20 Bondarenko 2024-11-24 3000.00
+Smith Japanese 6 Tanaka 2024-11-25 2100.50
+Lopez Portuguese 90 Silva 2024-11-26 1350.00
+Nowak Czech 11 Svoboda 2024-11-27 1650.75
