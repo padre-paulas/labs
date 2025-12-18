@@ -5,6 +5,7 @@
 void readFile();
 void addOrder();
 void searchOrders();
+void printOrders();
 
 struct Order
 {
@@ -22,6 +23,7 @@ int main()
 
   readFile();
   addOrder();
+  optionSwitch();
 
   return 0;
 }
@@ -63,14 +65,19 @@ void optionSwitch()
   {
   case 1:
     addOrder();
+    break;
   case 2:
     searchOrders();
-  // case 3:
-  //   printOrders();
-  // case 4:
-  //   modifyOrder();
+    break;
+  case 3:
+    printOrders();
+    break;
+  case 4:
+    modifyOrder();
+    break;
   // case 5:
   //   sortOrders();
+    break;
   default:
     std::cout << "Invalid!\n";
   }
@@ -226,5 +233,35 @@ void searchOrders()
   if (!found)
   {
     std::cout << "No matching orders found\n";
+  }
+}
+
+void printOrders() {
+  std::ifstream file("order.txt");
+  std::string output;
+
+  while (file >> output) {
+    std::cout << output;
+  }
+  std::cout << std::endl;
+}
+
+void modifyOrder() {
+  bool modify = true;
+  int option;
+  while (modify) {
+    std::cout << "What would you like to modify?\n";
+    std::cout << "1 - client name\n2 - language\n3 - page quantity\n4 - translator name\n5 - date\n6 - price\n";
+    std::cin >> option;
+
+    switch (option)
+    {
+    case 1:
+      
+      break;
+    
+    default:
+      break;
+    }
   }
 }
