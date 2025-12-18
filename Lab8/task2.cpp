@@ -57,7 +57,7 @@ void optionSwitch()
   int option;
 
   std::cout << "What would you like to do?" << std::endl;
-  std::cout << "1 - add new order\n2 - search for an order\n3 - list the orders\n4 - modify order\n5 - sort orders" << std::endl;
+  std::cout << "1 - add new order\n2 - search for an order\n3 - list the orders\n4 - modify order\n5 - delete order\n6 - sort orders" << std::endl;
 
   std::cin >> option;
 
@@ -75,8 +75,11 @@ void optionSwitch()
   case 4:
     modifyOrder();
     break;
-  // case 5:
-  //   sortOrders();
+  case 5:
+    deleteOrder();
+    break;
+  case 6:
+    sortOrders();
     break;
   default:
     std::cout << "Invalid!\n";
@@ -236,32 +239,104 @@ void searchOrders()
   }
 }
 
-void printOrders() {
+void printOrders()
+{
   std::ifstream file("order.txt");
   std::string output;
 
-  while (file >> output) {
+  while (file >> output)
+  {
     std::cout << output;
   }
   std::cout << std::endl;
 }
 
-void modifyOrder() {
-  bool modify = true;
-  int option;
-  while (modify) {
-    std::cout << "What would you like to modify?\n";
-    std::cout << "1 - client name\n2 - language\n3 - page quantity\n4 - translator name\n5 - date\n6 - price\n";
-    std::cin >> option;
-
-    switch (option)
-    {
-    case 1:
-      
-      break;
-    
-    default:
-      break;
-    }
+void modifyOrder()
+{
+  if (orders.empty())
+  {
+    std::cout << "No orders to modify\n";
+    return;
   }
+
+  int index;
+  std::cout << "Enter order number (starting from 1): ";
+  std::cin >> index;
+
+  if (index < 1 || index > orders.size())
+  {
+    std::cout << "Invalid order number\n";
+    return;
+  }
+
+  Order &o = orders[index - 1]; // reference to real order
+
+  int option;
+  std::cout << "What would you like to modify?\n";
+  std::cout << "1 - client name\n"
+            << "2 - language\n"
+            << "3 - page quantity\n"
+            << "4 - translator name\n"
+            << "5 - date\n"
+            << "6 - price\n";
+
+  std::cin >> option;
+
+  switch (option)
+  {
+  case 1:
+    std::cout << "Enter new client name: ";
+    std::cin >> o.client;
+    break;
+  case 2:
+    std::cout << "Enter new language: ";
+    std::cin >> o.language;
+    break;
+  case 3:
+    std::cout << "Enter new page quantity: ";
+    std::cin >> o.pageQuantity;
+    break;
+  case 4:
+    std::cout << "Enter new translator name: ";
+    std::cin >> o.translator;
+    break;
+  case 5:
+    std::cout << "Enter new date: ";
+    std::cin >> o.date;
+    break;
+  case 6:
+    std::cout << "Enter new price: ";
+    std::cin >> o.price;
+    break;
+  default:
+    std::cout << "Invalid option\n";
+    return;
+  }
+
+  std::ofstream file("order.txt");
+  for (const Order &ord : orders)
+  {
+    file << ord.client << " "
+         << ord.language << " "
+         << ord.pageQuantity << " "
+         << ord.translator << " "
+         << ord.date << " "
+         << ord.price << '\n';
+  }
+
+  std::cout << "Order updated successfully\n";
+}
+
+void deleteOrder() {
+
+}
+
+void sortOrders() {
+  std::cout << "What would you like to sort by?\n";
+  std::cout << "1 - client name\n"
+            << "2 - language\n"
+            << "3 - page quantity\n"
+            << "4 - translator name\n"
+            << "5 - date\n"
+            << "6 - price\n";
 }
