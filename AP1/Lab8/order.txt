@@ -7,4 +7,4 @@ Koval French 15 Dubois 2024-11-22 2400.75
 Hrytsenko Ukrainian 20 Bondarenko 2024-11-24 3000
 Lopez Portuguese 90 Silva 2024-11-26 1350
 Thunoda Polish 100 Kowalski 2024-11-21 1500
-Martinez Spanish 540 Garcia 2024-11-19 800
+Martinez Korean 540 Garcia 2024-11-19 800
