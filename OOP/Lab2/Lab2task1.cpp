@@ -46,6 +46,8 @@ int main() {
   second.print();
   second.setName("Emma");
   second.print();
+  second.depositWithdraw(5, false);
+  second.print();
   return 0;
 }
 
@@ -124,34 +126,26 @@ void BankAccount::depositWithdraw(int amount, bool deposit) {
 void BankAccount::updateRecentActions(const char sentence[50]) {
   int i = 0, j = 0;
   while (i < 10) {
-    std::cout << "At the top i = " << i << " \n";
     j = 0;
     if (recentActions[i][0] == '\0') {
       while (sentence[j] != '\0' && j < 49) {
         recentActions[i][j] = sentence[j];
-        // std::cout << "recent actions[i][j] = " << recentActions[i][j] 
-        // << "\tsentence[j] = " << sentence[j] << std::endl;
-
         j++;
       }
       recentActions[i][j] = '\0';
 
       return;
     }
-    // std::cout << "Here's recentActions[9][j] = " << recentActions[9][j];
-    // std::cout << "\njust above i++ i = " << i << " \n";
     i++;
-    std::cout << "\ni = " << i << " \n";
   }
-  std::cout << "hello are we here? ";
-  j = 0;
   if (recentActions[9][0] != '\0') {
     for (i = 1; i < 10; i++) {
+      j = 0;
       while (j < 49 && recentActions[i][j] != '\0') {
         recentActions[i - 1][j] = recentActions[i][j];
         j++;
       }
-      recentActions[i][j] = '\0';
+      recentActions[i - 1][j] = '\0';
     }
 
     j = 0;
@@ -159,6 +153,7 @@ void BankAccount::updateRecentActions(const char sentence[50]) {
       recentActions[9][j] = sentence[j];
       j++;
     }
+    recentActions[9][j] = '\0';
   }
 }
 
