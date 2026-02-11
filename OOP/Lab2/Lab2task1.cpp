@@ -5,49 +5,18 @@
 
 int main() {
 
-  // BankAccount first;
-  // first.print();
-  BankAccount second("Pavlo");
-  // second.print();
-  // second.setName("Someone");
-  second.depositWithdraw(3, true);
-  second.print();
-  second.depositWithdraw(3, false);
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.depositWithdraw(150, true);
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();  
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.setName("Emma");
-  second.print();
-  second.depositWithdraw(5, false);
-  second.print();
+  BankAccount pavlosAccount("Pavlo");
+  pavlosAccount.depositWithdraw(3, true);
+  pavlosAccount.depositWithdraw(3, false);
+  pavlosAccount.depositWithdraw(150, true);
+  pavlosAccount.setName("Pavlo Prokhorov");
+  pavlosAccount.depositWithdraw(5, false);
+  pavlosAccount.depositWithdraw(100, true);
+  pavlosAccount.depositWithdraw(10000, true);
+  pavlosAccount.depositWithdraw(100, false);
+  pavlosAccount.setDate(133, 8, 2004);
+  pavlosAccount.setDate(12, 7, 2025);
+  pavlosAccount.print();
   return 0;
 }
 
@@ -102,8 +71,11 @@ void BankAccount::setName(const char newName[20]) {
 
 void BankAccount::depositWithdraw(int amount, bool deposit) {
   if (amount <= 0) {
-    std::cout << "Invalid input!" << std::endl;
-    return;
+    if (deposit) {
+      std::cout << "Invalid deposit!" << std::endl;
+      return;
+    } 
+    std::cout << "Invalid withdrawal!" << std::endl;
   }
   if (deposit) {
     balance += amount;
@@ -125,19 +97,7 @@ void BankAccount::depositWithdraw(int amount, bool deposit) {
 
 void BankAccount::updateRecentActions(const char sentence[50]) {
   int i = 0, j = 0;
-  while (i < 10) {
-    j = 0;
-    if (recentActions[i][0] == '\0') {
-      while (sentence[j] != '\0' && j < 49) {
-        recentActions[i][j] = sentence[j];
-        j++;
-      }
-      recentActions[i][j] = '\0';
-
-      return;
-    }
-    i++;
-  }
+  
   if (recentActions[9][0] != '\0') {
     for (i = 1; i < 10; i++) {
       j = 0;
@@ -154,7 +114,22 @@ void BankAccount::updateRecentActions(const char sentence[50]) {
       j++;
     }
     recentActions[9][j] = '\0';
+    return;
   }
+
+  while (i < 10) {
+    j = 0;
+    if (recentActions[i][0] == '\0') {
+      while (sentence[j] != '\0' && j < 49) {
+        recentActions[i][j] = sentence[j];
+        j++;
+      }
+      recentActions[i][j] = '\0';
+      return;
+    }
+    i++;
+  }
+  return;
 }
 
 BankAccount::BankAccount() 
@@ -181,6 +156,30 @@ BankAccount::BankAccount(const char accOwner[20])
 
   setDateCreated();
 };
+
+void BankAccount::setDate(int newDay, int newMonth, int newYear) {
+  if (
+    newDay <= 0 
+    || newDay > 31 
+    || newMonth <= 0 
+    || newMonth > 12 
+    || newYear < 1890 
+    || newYear > 2026
+  ) {
+    std::cout << "Invalid date!\n";
+    return;
+  }
+  dateCreated.day = newDay;
+  dateCreated.month = newMonth;
+  dateCreated.year = newYear;
+
+  char buffer[50];
+  std::snprintf(buffer, 50, "Changed the date of account creation to %u/%u/%u", newDay, newMonth, newYear);
+  updateRecentActions(buffer);
+  
+  return;
+}
+
 
 
 

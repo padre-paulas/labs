@@ -16,13 +16,13 @@ class BankAccount {
     int balance;
     char recentActions[10][50] = {"Account created"};
     void setDateCreated();
+    void updateRecentActions(const char sentence[50]);
   public:
     BankAccount();
     BankAccount(const char accOwner[20]);
     void setName(const char newName[20]);
     void depositWithdraw(int amount, bool deposit);
-    void updateRecentActions(const char sentence[50]);
-    void setDate(unsigned newDay, unsigned newMonth, unsigned newYear);
+    void setDate(int newDay, int newMonth, int newYear);
     void print();
 };
 
