@@ -1,5 +1,5 @@
-#ifndef FIRM_H
-#define FIRM_H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
 struct Date {
   unsigned day;
@@ -11,6 +11,8 @@ struct Date {
 
 class BankAccount {
   private: 
+    static int nextID;
+    int accID;
     char owner[20];
     Date dateCreated;
     int balance;
@@ -23,6 +25,7 @@ class BankAccount {
     void setName(const char newName[20]);
     void depositWithdraw(int amount, bool deposit);
     void setDate(int newDay, int newMonth, int newYear);
+    int getID() const { return accID; };
     void print();
 };
 

@@ -1,6 +1,5 @@
 #include "Lab2task1.h"
 #include <iostream>
-#include <string>
 #include <ctime>
 
 int main() {
@@ -132,8 +131,11 @@ void BankAccount::updateRecentActions(const char sentence[50]) {
   return;
 }
 
+int BankAccount::nextID = 1000;
+
 BankAccount::BankAccount() 
-: owner("Undefined"),
+: owner("Undefined"), 
+accID(nextID++),
 balance(0) {
   for(int i = 0; i < 10; i++) {
     recentActions[i][0] = '\0'; 
@@ -142,7 +144,8 @@ balance(0) {
 };
 
 BankAccount::BankAccount(const char accOwner[20])
-: balance(0) {
+: balance(0),
+accID(nextID++) {
   int i = 0;
   while (accOwner[i] != '\0' && i < 19) {
     owner[i] = accOwner[i];
