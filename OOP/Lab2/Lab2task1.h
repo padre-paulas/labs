@@ -23,9 +23,11 @@ class BankAccount {
     BankAccount();
     BankAccount(const char accOwner[20]);
     void setName(const char newName[20]);
+    const char* getName() const { return owner; };
     void depositWithdraw(int amount, bool deposit);
     void setDate(int newDay, int newMonth, int newYear);
     int getID() const { return accID; };
+    void deleteID() { accID = -1; };
     void print();
 };
 
