@@ -40,7 +40,7 @@ void BankAccount::print() {
   << "Owner: " << owner << std::endl
   << "Account created: " << dateCreated.day 
   << "/" << dateCreated.month << "/" << dateCreated.year 
-  << std::endl << "Balance: " << balance << std::endl 
+  << std::endl << "Balance: $" << balance << std::endl 
   << "Recent actions: ";
 
   int i = 0, j = 0;
@@ -138,7 +138,7 @@ BankAccount::BankAccount()
 : owner("Undefined"), 
 accID(nextID++),
 balance(0) {
-  for(int i = 0; i < 10; i++) {
+  for(int i = 1; i < 10; i++) {
     recentActions[i][0] = '\0'; 
   }
   setDateCreated();
@@ -154,7 +154,7 @@ accID(nextID++) {
   }
   owner[i] = '\0';
 
-  for(int i = 0; i < 10; i++) {
+  for(int i = 1; i < 10; i++) {
     recentActions[i][0] = '\0'; 
   }
   setDateCreated();
