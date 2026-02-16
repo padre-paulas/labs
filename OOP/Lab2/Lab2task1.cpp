@@ -2,7 +2,7 @@
 #include <iostream>
 #include <ctime>
 
-int main() {
+int performAccOperations() {
 
   BankAccount pavlosAccount("Pavlo");
   pavlosAccount.depositWithdraw(3, true);
@@ -36,7 +36,8 @@ void BankAccount::setDateCreated() {
 }
 
 void BankAccount::print() {
-  std::cout << "\nOwner: " << owner << std::endl
+  std::cout << "\nID: " << accID << std::endl
+  << "Owner: " << owner << std::endl
   << "Account created: " << dateCreated.day 
   << "/" << dateCreated.month << "/" << dateCreated.year 
   << std::endl << "Balance: " << balance << std::endl 
@@ -156,7 +157,6 @@ accID(nextID++) {
   for(int i = 0; i < 10; i++) {
     recentActions[i][0] = '\0'; 
   }
-
   setDateCreated();
 };
 
