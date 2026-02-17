@@ -136,7 +136,7 @@ int BankAccount::nextID = 1000;
 
 BankAccount::BankAccount() 
 : owner("Undefined"), 
-accID(nextID++),
+accID(nextID < 0 ? nextID = nextID * -1 + 1 : nextID = nextID * -1 - 1),
 balance(0) {
   for(int i = 1; i < 10; i++) {
     recentActions[i][0] = '\0'; 
@@ -146,7 +146,7 @@ balance(0) {
 
 BankAccount::BankAccount(const char accOwner[20])
 : balance(0),
-accID(nextID++) {
+accID(nextID < 0 ? nextID = nextID * -1 + 1 : nextID = nextID * -1 - 1) {
   int i = 0;
   while (accOwner[i] != '\0' && i < 19) {
     owner[i] = accOwner[i];
