@@ -8,6 +8,7 @@ class BankAccounts {
     BankAccount accounts[maxAccNumber];
     unsigned actualAccNumber = 0;
   public: 
+    void showActualAccNumber();
     void addAcc(const char accOwner[20]);
     void editAcc();
     void deleteAcc(int ID);
