@@ -1,5 +1,4 @@
 #include "Lab2task2.h"
-// #include "Lab2task1.h"
 #include <iostream>
 
 int main() {
@@ -8,15 +7,21 @@ int main() {
   accArray.addAcc("Pavlo");
   accArray.addAcc("Taylor");
   accArray.addAcc("Margot");
+  accArray.addAcc("Margot");
   accArray.addAcc("Johnny");
   accArray.addAcc("Rony");
   accArray.editAcc();
-  accArray.deleteAcc(1100);
-  accArray.sortAccs();
+  // accArray.deleteAcc(1102);
+  // accArray.sortAccs();
   accArray.printAllAccs();
+  // accArray.showActualAccNumber();
   accArray.printPersonsAccs();
 
   return 0;
+}
+
+void BankAccounts::showActualAccNumber() {
+  std::cout << "Actual Account Number: " << actualAccNumber << std::endl;
 }
 
 BankAccounts::BankAccounts() : actualAccNumber(0) {};
@@ -32,8 +37,8 @@ void BankAccounts::addAcc(const char accOwner[20]) {
 void BankAccounts::deleteAcc(int ID) {
   for (int i = 0; i < maxAccNumber; i++) {
     if (accounts[i].getID() == ID) {
-      // std::cout << "getID: " << accounts[i].getID() << std::endl;
       accounts[i].deleteID();
+      actualAccNumber--;
       return;
     }
   }
@@ -64,6 +69,20 @@ void BankAccounts::editAcc() {
         int year = (newDate[6] - '0') * 1000 + (newDate[7] - '0') * 100 + (newDate[8] - '0') * 10 + (newDate[9] - '0');
           accounts[i].setDate(day, month, year);
         std::cout << int(newDate[9]);
+      }
+      int newDepWith = 0;
+      if (strcmp(input, "dep/with") == 0) {
+        std::cout << "Do you want to deposit or withdraw? (d/w): ";
+        std::cin >> input;
+        if (strcmp(input, "d") == 0) {
+          std::cout << "How much do you want to deposit: ";
+          std::cin >> newDepWith;
+          accounts[i].depositWithdraw(newDepWith, true);
+        } else if (strcmp(input, "w") == 0) {
+          std::cout << "How much do you want to deposit: ";
+          std::cin >> newDepWith;
+          accounts[i].depositWithdraw(newDepWith, false);
+        }
       }
     }
   }
