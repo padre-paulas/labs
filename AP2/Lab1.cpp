@@ -1,10 +1,9 @@
 #include <iostream> 
-#include <cstring>
-#include <typeinfo>
 
 struct Node {
   char letter;
   Node *next;
+
   Node(char letter, Node *next) {
     this->letter = letter;
     this->next = next;
@@ -16,61 +15,104 @@ struct Node {
 
 class CircularLL {
   public: 
-    // CircularLL(char headLetter);
-    void insert(char letter);
+    void append(char letter);
     void delElem(char letter);
+    void delLast();
     void print();
-  // private: 
+  private: 
     Node *head = nullptr;
 };
 
 int main() {
-
-  // Node *alphabet = nullptr;
   CircularLL list;
-  list.insert('A');
-  std::cout << list.head->letter << std::endl;
-
-  list.insert('B');
-  list.insert('C');
-
-  list.delElem('C');
-
-
-  std::cout << list.head->next->letter << std::endl;
-
+  list.append('A');
+  list.append('B');
+  list.append('C');
+  list.delLast();
+  list.print();
+  
   return 0;
 }
 
-// CircularLL::CircularLL(char headLetter) {
-//   *head = Node(headLetter, nullptr);
-// }
-
-void CircularLL::insert(char letter) {
+void CircularLL::append(char letter) {
   Node *newNode = new Node(letter, nullptr);
   if (!head) {
     head = newNode;
+    head->next = head;
   } else {
     Node *temp = head;
-    while (temp->next) {
+    while (temp->next != head) {
       temp = temp->next;
     }
     temp->next = newNode;
+    newNode->next = head;
   }
+  std::cout << "Appended " << newNode->letter << std::endl;
 }
 
 void CircularLL::delElem(char letter) {
-  if (!head) return;
+  if (!head) {
+    std::cout << "The list is empty!\n";
+    return;
+  }
   Node *temp = head;
-  std::cout << typeid(temp->letter).name() << " and " << typeid(letter).name() << std::endl;
-  // std::cout << temp->letter != letter;
-  // while (!(temp->letter == letter)) {
-  //   temp = temp->next;
-  // }
-  // temp->next = nullptr;
+  if (temp->letter == letter) {
+    if (temp == temp->next) {
+      head = nullptr;
+      delete temp;
+      return;
+    }
+    while (temp->next != head) {
+      temp = temp->next;
+    } 
+    Node *toDelete = temp->next;
+    temp->next = head->next;
+    head = temp->next;
+    delete toDelete;
+    return;
+  }
+  while (temp->next->letter != letter && temp->next->next != head) {
+    temp = temp->next;
+  }
+  if (temp->next->letter != letter) {
+    std::cout << "The list doesn't contain letter " << letter << std::endl;
+    return;
+  }
+  Node *toDelete = temp->next;
+  temp->next = temp->next->next;
+  delete toDelete;
 }
 
 void CircularLL::print() {
+  if (!head) {
+    std::cout << "The list is empty!\n"; 
+    return;
+  }
+  Node *temp = head;
+  std::cout << "\nList:\n";
+  do {
+    std::cout << temp->letter << std::endl;
+    temp = temp->next;
+  } while (temp != head);
+}
 
+void CircularLL::delLast() {
+   if (!head) {
+    std::cout << "The list is empty!\n"; 
+    return;
+  }
+  Node *temp = head;
+ 
+  if (temp->next == head) {
+    delete temp;
+    head = nullptr;
+    return;
+  }
+  while (temp->next->next != head) {
+    temp = temp->next;
+  }
+  Node *toDelete = temp->next;
+  temp->next = temp->next->next;
+  delete toDelete;
 }
 
