@@ -19,18 +19,19 @@ class CircularLL {
     void delElem(char letter);
     void delLast();
     void print();
+    void fillAlphabet();
+    ~CircularLL() { deleteList(); };
   private: 
+    void deleteList();
     Node *head = nullptr;
 };
 
 int main() {
   CircularLL list;
-  list.append('A');
-  list.append('B');
-  list.append('C');
+  list.fillAlphabet();
   list.delLast();
   list.print();
-  
+
   return 0;
 }
 
@@ -58,6 +59,7 @@ void CircularLL::delElem(char letter) {
   Node *temp = head;
   if (temp->letter == letter) {
     if (temp == temp->next) {
+      std::cout << "Deleted " << letter << std::endl;
       head = nullptr;
       delete temp;
       return;
@@ -65,6 +67,7 @@ void CircularLL::delElem(char letter) {
     while (temp->next != head) {
       temp = temp->next;
     } 
+    std::cout << "Deleted " << letter << std::endl;
     Node *toDelete = temp->next;
     temp->next = head->next;
     head = temp->next;
@@ -78,6 +81,7 @@ void CircularLL::delElem(char letter) {
     std::cout << "The list doesn't contain letter " << letter << std::endl;
     return;
   }
+  std::cout << "Deleted " << letter << std::endl;
   Node *toDelete = temp->next;
   temp->next = temp->next->next;
   delete toDelete;
@@ -97,13 +101,14 @@ void CircularLL::print() {
 }
 
 void CircularLL::delLast() {
-   if (!head) {
+  if (!head) {
     std::cout << "The list is empty!\n"; 
     return;
   }
   Node *temp = head;
  
   if (temp->next == head) {
+    std::cout << "Deleted " << temp->letter << std::endl;
     delete temp;
     head = nullptr;
     return;
@@ -111,8 +116,26 @@ void CircularLL::delLast() {
   while (temp->next->next != head) {
     temp = temp->next;
   }
+  std::cout << "Deleted " << temp->next->letter << std::endl;
   Node *toDelete = temp->next;
   temp->next = temp->next->next;
   delete toDelete;
 }
 
+void CircularLL::deleteList() {
+  if (!head) return;
+  Node *temp = head->next;
+  while (temp != head) {
+    Node *toDelete = temp;
+    temp = temp->next;
+    delete toDelete;
+  }
+  delete head;
+  head = nullptr;
+}
+
+void CircularLL::fillAlphabet() {
+  for (char ch = 'A'; ch <= 'Z'; ch++) {
+    append(ch);
+  }
+}
