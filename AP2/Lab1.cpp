@@ -95,9 +95,10 @@ void CircularLL::print() {
   Node *temp = head;
   std::cout << "\nList:\n";
   do {
-    std::cout << temp->letter << std::endl;
+    std::cout << temp->letter << "  ";
     temp = temp->next;
   } while (temp != head);
+  std::cout << std::endl;
 }
 
 void CircularLL::delLast() {
