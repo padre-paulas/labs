@@ -16,6 +16,7 @@ struct Node {
 class CircularLL {
   public: 
     void append(char letter);
+    void prepend(char letter);
     void delElem(char letter);
     void delLast();
     void print();
@@ -49,6 +50,23 @@ void CircularLL::append(char letter) {
     newNode->next = head;
   }
   std::cout << "Appended " << newNode->letter << std::endl;
+}
+
+void CircularLL::prepend(char letter) {
+  Node *newNode = new Node(letter, nullptr);
+  if (!head) {
+    head = newNode;
+    head->next = head;
+  } else {
+    Node *temp = head;
+    while (temp->next != head) {
+      temp = temp->next;
+    }
+    newNode->next = head;
+    temp->next = newNode;
+    head = newNode;
+  }
+  std::cout << "Prepended " << letter << std::endl;
 }
 
 void CircularLL::delElem(char letter) {
