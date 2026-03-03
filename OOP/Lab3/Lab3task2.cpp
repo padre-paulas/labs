@@ -1,13 +1,17 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cctype>
+#include <cstdio>
 
 void isWordOdd(char ch, int& oddCount, int& charCount);
 void areBracesCorrect(char ch, int &braceBalance, int &braceMistakes);
 void copy();
+void deleteOddNumbers();
 
 int main() {
   copy();
+  deleteOddNumbers();
   return 0;
 }
 
@@ -25,7 +29,6 @@ void copy() {
 
   while (ifs.get(ch)) {
     ofs.put(ch);
-    std::cout << ch;
     isWordOdd(ch, oddCount, charCount);
     areBracesCorrect(ch, braceBalance, braceMistakes);
   }
@@ -66,4 +69,49 @@ void areBracesCorrect(char ch, int &braceBalance, int &braceMistakes) {
       ++braceMistakes;
     }
   }
+}
+
+void deleteOddNumbers() {
+  std::ifstream ifs("file_output.txt");
+  if (!ifs.is_open()) return;
+
+  std::ofstream ofs("file_output_tmp.txt", std::ios::trunc);
+  if (!ofs.is_open()) return;
+  char ch;
+  long long num = 0;
+  int numLength = 0;
+  bool inNumber = false;
+
+  while (ifs.get(ch)) {
+    if (std::isdigit(ch)) {
+      inNumber = true;
+      num = num * 10 + (ch - '0');
+      ++numLength;
+    } else {
+      if (inNumber) {
+        if (num % 2 == 0) {
+          ofs << num; 
+        } else {
+          for (int i = 0; i < numLength; ++i) ofs << ' ';
+        }
+        num = 0;
+        numLength = 0;
+        inNumber = false;
+      }
+      ofs << ch;
+    }
+  }
+
+  if (inNumber) {
+    if (num % 2 == 0) {
+      ofs << num;
+    } else {
+      for (int i = 0; i < numLength; ++i) ofs << ' ';
+    }
+  }
+
+  ifs.close();
+  ofs.close();
+  std::remove("file_output.txt");
+  std::rename("file_output_tmp.txt", "file_output.txt");
 }
