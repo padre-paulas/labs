@@ -8,6 +8,8 @@ void isWordOdd(char ch, int& oddCount, int& charCount);
 void areBracesCorrect(char ch, int &braceBalance, int &braceMistakes);
 void copy();
 void deleteOddNumbers();
+void countLetters(char ch, int letterCounts[]);
+void printLetterCounts(int letterCounts[]);
 
 int main() {
   copy();
@@ -31,10 +33,22 @@ void copy() {
     ofs.put(ch);
     isWordOdd(ch, oddCount, charCount);
     areBracesCorrect(ch, braceBalance, braceMistakes);
+    countLetters(ch, letterCounts);
   }
   braceMistakes += braceBalance;
-  std::cout << " oddCount: " << oddCount << " charCount: " 
-  << charCount << " brace mistakes: " << braceMistakes;
+  std::cout << "\nNumber of odd words: " << oddCount
+  << "\nNumber of brace mistakes: " << braceMistakes;
+  printLetterCounts(letterCounts);
+}
+
+void printLetterCounts(int letterCounts[]) {
+  char letter = 'a';
+  std::cout << "\nLetter counts:\n";
+  for (int i = 0; i < 26; i++) {
+    std::cout << letter << ": " << letterCounts[i] << std::endl;
+    ++letter;
+  }
+  std::cout << std::endl;
 }
 
 void isWordOdd(char ch, int& oddCount, int& charCount) {
