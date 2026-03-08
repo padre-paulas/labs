@@ -18,17 +18,20 @@ class Stack {
     ~Stack();
     void push(int value);
     Node* pop();
-   
+    Stack* sort();
 };
 
 int main() {
-
   Stack stackOfNodes;
-  stackOfNodes.push(43);
+  stackOfNodes.push(4993);
   stackOfNodes.push(44);
-  stackOfNodes.push(45);
+  stackOfNodes.push(4);
+  stackOfNodes.push(5);
+  stackOfNodes.push(459);
   Node *popped = stackOfNodes.pop();
   popped->print();
+  stackOfNodes.sort();
+  stackOfNodes.pop();
 
   return 0;
 }
@@ -41,14 +44,7 @@ void Node::print() {
 
 void Stack::push(int value) {
   Node *temp = new Node(value, top);
-  Node *elementPtr = top;
-  while (temp->value > elementPtr->next->value) {
-    elementPtr = elementPtr->next;
-  }
-  elementPtr->next = temp;
-  temp->next = elementPtr->next->next;
-
-  // top = temp;
+  top = temp;
   // delete temp;
   // std::cout << "We just pushed " << top->value;
 }
@@ -62,6 +58,24 @@ Node* Stack::pop() {
   top = top->next;
   // std::cout << "THE VALUE: " << temp->value;
   return temp;
+}
+
+Stack* Stack::sort() {
+  // Stack copy = *this;
+  Stack *sorted = new Stack;
+  while (top != nullptr) {
+    int tempValue = top->value;
+    this->pop();
+    while (sorted->top != nullptr) {
+      if (sorted->top->value > tempValue) {
+      this->push(sorted->top->value);
+      sorted->pop();
+      }
+      break;
+    }
+    sorted->push(tempValue);
+  }
+  return sorted;
 }
 
 Stack::~Stack() {
