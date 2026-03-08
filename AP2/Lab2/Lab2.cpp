@@ -61,14 +61,14 @@ Node* Stack::pop() {
 }
 
 Stack* Stack::sort() {
-  // Stack copy = *this;
+  Stack copy = *this;
   Stack *sorted = new Stack;
-  while (top != nullptr) {
-    int tempValue = top->value;
-    this->pop();
+  while (copy.top != nullptr) {
+    int tempValue = copy.top->value;
+    copy.pop();
     while (sorted->top != nullptr) {
       if (sorted->top->value > tempValue) {
-      this->push(sorted->top->value);
+      copy.push(sorted->top->value);
       sorted->pop();
       }
       break;
