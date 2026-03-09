@@ -17,8 +17,8 @@ class Stack {
     Stack() { top = nullptr; };
     ~Stack();
     void push(int value);
-    Node* pop();
-    Stack* sort();
+    void pop();
+    Stack sort();
 };
 
 int main() {
@@ -45,35 +45,31 @@ void Node::print() {
 void Stack::push(int value) {
   Node *temp = new Node(value, top);
   top = temp;
-  // delete temp;
-  // std::cout << "We just pushed " << top->value;
 }
 
-Node* Stack::pop() {
+void Stack::pop() {
   if (!top) {
     std::cout << "Stack is empty!\n";
-    return nullptr;
+    return;
   }
   Node *temp = top;
   top = top->next;
-  // std::cout << "THE VALUE: " << temp->value;
-  return temp;
+  delete temp;
 }
 
-Stack* Stack::sort() {
+Stack Stack::sort() {
   Stack copy = *this;
-  Stack *sorted = new Stack;
+  Stack sorted;
   while (copy.top != nullptr) {
     int tempValue = copy.top->value;
     copy.pop();
-    while (sorted->top != nullptr) {
-      if (sorted->top->value > tempValue) {
-      copy.push(sorted->top->value);
-      sorted->pop();
+    while (sorted.top != nullptr) {
+      if (sorted.top->value > tempValue) {
+      copy.push(sorted.top->value);
+      sorted.pop();
       }
-      break;
     }
-    sorted->push(tempValue);
+    sorted.push(tempValue);
   }
   return sorted;
 }
