@@ -7,63 +7,52 @@ struct Node {
     double price;
     Node *next;
   public:
-    Node(std::string phoneName, double price, Node *next);
-    void print();
+    Node(
+      const std::string phoneName, 
+      const double price,
+       Node *next
+      );
+    void print() const;
     friend class Stack;
 };
 
 class Stack {
   private: 
-  public: // to be returned to private!!
     Node *top;
   public: 
     Stack() { top = nullptr; };
-    // ~Stack();
+    ~Stack() { clearStack(); };
     void push(std::string phoneName, double price);
     void pop();
-    void deleteFirst();
-    void printStack();
+    void deleteBottom();
+    void printStack() const;
     void clearStack();
-    // Stack* sort();
 };
 
 int main() {
   Stack stackOfNodes;
-  stackOfNodes.push("Iphone 13", 500);
-  stackOfNodes.push("Iphone 14", 500);
-  stackOfNodes.push("Iphone 15", 600);
+
+  stackOfNodes.push("Iphone 13", 400);
+  stackOfNodes.push("Iphone 14", 600);
+  stackOfNodes.push("Iphone 15", 700);
   stackOfNodes.push("Iphone 17", 1000);
-  stackOfNodes.top->print();
-  stackOfNodes.clearStack();
+  stackOfNodes.push("Iphone 17 Pro", 1100);
+  // stackOfNodes.clearStack();
+  // stackOfNodes.deleteFirst();
   stackOfNodes.printStack();
 
   return 0;
 }
 
-// int main() {
-//   Stack stackOfNodes;
-//   stackOfNodes.push(4993);
-//   stackOfNodes.push(44);
-//   stackOfNodes.push(4);
-//   stackOfNodes.push(5);
-//   stackOfNodes.push(459);
-//   Node *popped = stackOfNodes.pop();
-//   popped->print();
-//   stackOfNodes.sort();
-//   stackOfNodes.pop();
-
-//   return 0;
-// }
-
-Node::Node(std::string phoneName, double price, Node *next)
+Node::Node(const std::string phoneName, const double price, Node *next)
 : phoneName(phoneName), price(price), next(next) {};
 
-void Node::print() {
+void Node::print() const {
   std::cout << "Phone name: " << phoneName 
   << ", price: " << price << "$" << std::endl;
 }
 
-void Stack::push(std::string phoneName, double price) {
+void Stack::push(const std::string phoneName, const double price) {
   Node *temp = new Node(phoneName, price, top);
   top = temp;
 }
@@ -78,44 +67,36 @@ void Stack::pop() {
   delete temp;
 }
 
-void Stack::printStack() {
+void Stack::printStack() const {
   Node *current = top;
+
+  std::cout << std::endl << "⬇ TOP\n";
   while (current) {
     current->print();
     current = current->next;
   }
+  std::cout << std::endl;
 }
 
 void Stack::clearStack() {
   while (top) pop();
 }
 
-void Stack::deleteFirst() {
+void Stack::deleteBottom() {
+  if (!top) {
+    std::cout << "Stack is empty!\n";
+    return;   
+  }
 
+  Stack buffer;
+  while (top->next) {
+    buffer.push(top->phoneName, top->price);
+    this->pop();
+  }
+  this->pop();
+
+  while (buffer.top) {
+    this->push(buffer.top->phoneName, buffer.top->price);
+    buffer.pop();
+  }
 }
-
-// // Stack* Stack::sort() {
-// //   Stack copy = *this;
-// //   Stack *sorted = new Stack;
-// //   while (copy.top != nullptr) {
-// //     int tempValue = copy.top->value;
-// //     copy.pop();
-// //     while (sorted->top != nullptr) {
-// //       if (sorted->top->value > tempValue) {
-// //       copy.push(sorted->top->value);
-// //       sorted->pop();
-// //       }
-// //       break;
-// //     }
-// //     sorted->push(tempValue);
-// //   }
-// //   return sorted;
-// // }
-
-// Stack::~Stack() {
-//   while (top) {
-//     Node *temp = top;
-//     top = top->next;
-//     delete temp;
-//   }
-// }
