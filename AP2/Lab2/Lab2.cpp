@@ -5,8 +5,8 @@ struct Node {
     int value;
     Node *next;
   public:
-    Node(int value, Node *next);
-    void print();
+    Node(const int value, Node *next);
+    void print() const;
     friend class Stack;
 };
 
@@ -16,9 +16,10 @@ class Stack {
   public: 
     Stack() { top = nullptr; };
     ~Stack();
-    void push(int value);
+    void push(const int value);
     void pop();
-    Stack sort();
+    void sort();
+    void printStack() const;
 };
 
 int main() {
@@ -28,21 +29,20 @@ int main() {
   stackOfNodes.push(4);
   stackOfNodes.push(5);
   stackOfNodes.push(459);
-  Node *popped = stackOfNodes.pop();
-  popped->print();
   stackOfNodes.sort();
+  stackOfNodes.printStack();
   stackOfNodes.pop();
 
   return 0;
 }
 
-Node::Node(int value, Node *next) : value(value), next(next) {};
+Node::Node(const int value, Node *next) : value(value), next(next) {};
 
-void Node::print() {
+void Node::print() const {
   std::cout << "Value: " << this->value << std::endl;
 }
 
-void Stack::push(int value) {
+void Stack::push(const int value) {
   Node *temp = new Node(value, top);
   top = temp;
 }
@@ -57,21 +57,32 @@ void Stack::pop() {
   delete temp;
 }
 
-Stack Stack::sort() {
-  Stack copy = *this;
+void Stack::sort() {
   Stack sorted;
-  while (copy.top != nullptr) {
-    int tempValue = copy.top->value;
-    copy.pop();
-    while (sorted.top != nullptr) {
-      if (sorted.top->value > tempValue) {
-      copy.push(sorted.top->value);
+  while (top != nullptr) {
+    int tempValue = top->value;
+    pop();
+    while (sorted.top != nullptr && sorted.top->value < tempValue) {
+      push(sorted.top->value);
       sorted.pop();
-      }
     }
     sorted.push(tempValue);
   }
-  return sorted;
+  while (sorted.top != nullptr) {
+    push(sorted.top->value);
+    sorted.pop();
+  }
+}
+
+void Stack::printStack() const {
+  Node *current = top;
+
+  std::cout << std::endl << "⬇ TOP\n";
+  while (current) {
+    current->print();
+    current = current->next;
+  }
+  std::cout << std::endl;
 }
 
 Stack::~Stack() {
