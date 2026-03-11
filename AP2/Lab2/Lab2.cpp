@@ -29,6 +29,8 @@ int main() {
   stackOfNodes.push(4);
   stackOfNodes.push(5);
   stackOfNodes.push(459);
+  stackOfNodes.push(5987);
+  stackOfNodes.push(6789);
   stackOfNodes.sort();
   stackOfNodes.printStack();
   stackOfNodes.pop();
