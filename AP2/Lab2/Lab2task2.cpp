@@ -32,13 +32,15 @@ class Stack {
 int main() {
   Stack stackOfNodes;
 
-  stackOfNodes.push("Iphone 13", 400);
+  stackOfNodes.push("Iphone 13", 400);w
   stackOfNodes.push("Iphone 14", 600);
   stackOfNodes.push("Iphone 15", 700);
   stackOfNodes.push("Iphone 17", 1000);
   stackOfNodes.push("Iphone 17 Pro", 1100);
+  stackOfNodes.printStack();
+
   // stackOfNodes.clearStack();
-  // stackOfNodes.deleteFirst();
+  stackOfNodes.deleteBottom();
   stackOfNodes.printStack();
 
   return 0;
