@@ -71,12 +71,6 @@ class ICSITStudent: private PolytechnicStudent {
     void setMajor(std::string major);
     void setFirstName(std::string firstName);
     void setLastName(std::string lastName);
-    // void setMathGrade(double mathGrade);
-    // void setPhysicsGrade(double physicsGrade);
-    // void setEnglishGrade(double englishGrade);
-    // void setMajor(double major);
-    // void setOopGrade(double oopGrade);
-    // void setApGrade(double apGrade);
     void setGrade(Disciplines disciplines, double grade);
 };
 
@@ -104,7 +98,6 @@ int main() {
 }
 
 void demo() {
-  // ICSITStudent student;
   std::string firstName, lastName, group, major;
   double mathGrade, physicsGrade,
   englishGrade, oopGrade, apGrade;
