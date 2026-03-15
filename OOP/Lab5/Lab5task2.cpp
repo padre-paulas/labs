@@ -86,18 +86,20 @@ int main() {
   std::cout.imbue(std::locale());
 
   // Disciplines disciplines;
-  ICSITStudent st(
-    "ПП-14", 
-    "Проєктування та програмування інтелектуальних систем та пристроїв",
-    "Павло",
-    "Прохоров",
-    78.5,
-    95,
-    100,
-    100,
-    100
-  );
-  st.show();
+  // ICSITStudent st(
+  //   "ПП-14", 
+  //   "Проєктування та програмування інтелектуальних систем та пристроїв",
+  //   "Павло",
+  //   "Прохоров",
+  //   78.5,
+  //   95,
+  //   100,
+  //   100,
+  //   100
+  // );
+  // st.show();
+
+  demo();
   return 0;
 }
 
@@ -168,25 +170,26 @@ void demo() {
     } else if (choice == "фіз") {
       std::cout << "Введіть оцінку: ";
       std::cin >> physicsGrade;
-      student.setGrade(Disciplines::math, physicsGrade);
+      student.setGrade(Disciplines::physics, physicsGrade);
     } else if (choice == "анг") {
       std::cout << "Введіть оцінку: ";
       std::cin >> englishGrade;
-      student.setGrade(Disciplines::math, englishGrade);
+      student.setGrade(Disciplines::english, englishGrade);
     } else if (choice == "ооп") {
       std::cout << "Введіть оцінку: ";
       std::cin >> oopGrade;
-      student.setGrade(Disciplines::math, oopGrade);
+      student.setGrade(Disciplines::oop, oopGrade);
     } else if (choice == "ап") {
       std::cout << "Введіть оцінку: ";
       std::cin >> apGrade;
-      student.setGrade(Disciplines::math, apGrade);
+      student.setGrade(Disciplines::ap, apGrade);
     }
 
     student.show();
 
-
-  } while (choice == "c");
+    std::cout << "Продовжити або вийти? (п/в): ";
+    std::cin >> choice;
+  } while (choice == "п");
 }
 
 void ICSITStudent::show() {
