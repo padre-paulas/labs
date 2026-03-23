@@ -79,20 +79,6 @@ int main() {
   std::cin.imbue(std::locale());
   std::cout.imbue(std::locale());
 
-  // Disciplines disciplines;
-  // ICSITStudent st(
-  //   "ПП-14", 
-  //   "Проєктування та програмування інтелектуальних систем та пристроїв",
-  //   "Павло",
-  //   "Прохоров",
-  //   78.5,
-  //   95,
-  //   100,
-  //   100,
-  //   100
-  // );
-  // st.show();
-
   demo();
   return 0;
 }
