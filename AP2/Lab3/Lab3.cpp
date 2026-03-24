@@ -38,15 +38,6 @@ void runMenu(std::string &choice);
 
 int main() {
 
-  // Queue<const double> q;
-  // q.enqueue(4);
-  // q.enqueue(4.5);
-  // q.enqueue(89);
-  // q.display();
-  // q.dequeue();
-  // std::cout << q.getFront();
-  // q.display();
-
   demo();
 
   return 0;
