@@ -24,9 +24,10 @@ class Tree {
 };
 
 void demo();
+void demo2();
 
 int main() {
-  demo();
+  demo2();
 
   return 0;
 }
@@ -38,6 +39,18 @@ void demo() {
   tree.insert("ELSE { say \"hello\" }", 0);
   tree.insert("THEN IF (2 > 0) { say \"never\" }", 3);
   tree.insert("ELSE { say \"stop\" }", 3);
+  tree.print();
+  tree.removeNode(0);
+  tree.print();
+}
+
+void demo2() {
+  Tree tree;
+  tree.insert("IF (1 < 2)", 1);
+  tree.insert("THEN IF (4 > 2)", 2);
+  tree.insert("ELSE", 0);
+  tree.insert("THEN IF (2 > 0)", 3);
+  tree.insert("ELSE", 3);
   tree.print();
   tree.removeNode(0);
   tree.print();
