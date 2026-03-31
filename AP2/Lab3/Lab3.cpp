@@ -105,7 +105,7 @@ void Queue<T>::display() const {
 void demo() {
   std::string choice;
   std::cout << "\n=======Queue=======\n";
-  std::cout << "Choose queue data type (str, int, double, char): ";
+  std::cout << "Choose queue data type (str, int, short, double, char): ";
   std::cin >> choice;
 
   if (choice == "str") {
@@ -116,6 +116,8 @@ void demo() {
     runMenu<double>(choice);
   } else if (choice == "char") {
     runMenu<char>(choice);
+  } else if (choice == "short") {
+    runMenu<short>(choice);
   } else {
     std::cout << "Invalid input!\n";
     std::cout << "\n===================\n";
