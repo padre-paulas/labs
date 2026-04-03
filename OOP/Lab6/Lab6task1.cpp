@@ -1,15 +1,37 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <list>
 #include <random>
+#include <algorithm>
+#include <iterator>
+#include <exception>
 
 void fillFile(int amount);
 std::vector<double> readFile();
+void deletePositive(std::vector<double>& vec);
+std::list<double> createList(std::vector<double>& vec);
+template <typename T>
+void printElements(T& container);
 
 int main() {
 
-  fillFile(30);
-  readFile();
+  std::vector<double> vec;
+
+  try {
+    fillFile(30);
+    vec = readFile();
+  } catch (std::runtime_error& e) {
+    std::cout << e.what() << std::endl;
+    return -1;
+  }
+  printElements(vec);
+
+  deletePositive(vec);
+  printElements(vec);
+  
+  std::list<double> list = createList(vec);
+  printElements(list);
 
   return 0;
 }
@@ -20,7 +42,7 @@ void fillFile(int amount) {
 
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_real_distribution<double> dis(0.0, 1000);
+  std::uniform_real_distribution<double> dis(-1000, 1000);
 
   for (int i = 0; i < amount; i++) {
     ofs << dis(gen) << ' ';
@@ -33,43 +55,32 @@ std::vector<double> readFile() {
   if (!ifs.is_open()) throw std::runtime_error("Couldn't open file!");
 
   std::vector<double> vec;
-
-  // double number = 0;
-  // bool isIntPart = true;
-  // int i = 10;
-  // char ch = ' ';
   double number;
 
-  while(ifs >> number) {
-    std::cout << number << " ";
-    vec.push_back(number);
+  while(ifs >> number) vec.push_back(number);
 
-  // std::cout << "Hello 2";
-  // std::cout << ch;
-  //   if (ch == ' ') {
-  //     vec.push_back(number);
-  //     std::cout << number << std::endl;
-  // std::cout << "Hello from space";
-  //     number = 0;
-  //     isIntPart = true;
-  //     i = 10;
-  //     continue;
-  //   }
-  //   if (ch == '.') {
-  //     isIntPart = false;
-  //     continue;
-  //   }
-  //   if (isIntPart) {
-  //     // std::cout << "Hello 3";
-
-  //     number *= 10;
-  //     number += double(ch);
-  //   } else {
-  //     // std::cout << "Hello 4";
-
-  //     number += (double(ch) / i);
-  //     i *= 10;
-  //   }
-  }
   return vec;
+}
+
+void deletePositive(std::vector<double>& vec) {
+  // for (std::vector<double>::iterator it = vec.begin(); it != vec.end(); it++) {
+  //   if (*it > 0) { 
+  //     vec.erase(it); 
+  //     it--; 
+  //   }
+  // }
+  
+  // std::erase_if(vec, [](double n) { return n > 0; });
+  vec.erase(std::remove_if(vec.begin(), vec.end(),
+    [](double n) { return n > 0; }), vec.end());
+}
+
+std::list<double> createList(std::vector<double>& vec) {
+  return std::list<double>(vec.rbegin(), vec.rend());
+}
+
+template <typename T>
+void printElements(T& container) {
+  for (auto elem : container) std::cout << elem << " ";
+  std::cout << "\n\n";
 }
