@@ -12,7 +12,7 @@ std::vector<double> readFile();
 void deletePositive(std::vector<double>& vec);
 std::list<double> createList(std::vector<double>& vec);
 template <typename T>
-void printElements(T& container);
+void printElements(const T& container);
 
 int main() {
 
@@ -63,14 +63,6 @@ std::vector<double> readFile() {
 }
 
 void deletePositive(std::vector<double>& vec) {
-  // for (std::vector<double>::iterator it = vec.begin(); it != vec.end(); it++) {
-  //   if (*it > 0) { 
-  //     vec.erase(it); 
-  //     it--; 
-  //   }
-  // }
-  
-  // std::erase_if(vec, [](double n) { return n > 0; });
   vec.erase(std::remove_if(vec.begin(), vec.end(),
     [](double n) { return n > 0; }), vec.end());
 }
@@ -80,7 +72,7 @@ std::list<double> createList(std::vector<double>& vec) {
 }
 
 template <typename T>
-void printElements(T& container) {
+void printElements(const T& container) {
   for (auto elem : container) std::cout << elem << " ";
   std::cout << "\n\n";
 }

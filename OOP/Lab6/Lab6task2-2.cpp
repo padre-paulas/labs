@@ -40,6 +40,7 @@ class ShopQueue {
     void setMaxQueueSize(int size);
     virtual void addClient(std::string name, double payment);
     void processClient();
+    virtual ~ShopQueue() = default;
 };
 
 class ShopPriorityQueue: public ShopQueue {
@@ -67,7 +68,6 @@ void ShopQueue::setMaxQueueSize(int size) {
 
 void ShopQueue::openShop() {
   shopClosed = false;
-
 }
 
 void ShopQueue::goOnBreak(bool startBreak) {
@@ -157,15 +157,18 @@ void demo() {
   std::cout << "Enter max queue size: ";
   std::cin >> maxSize;
 
+  std::unique_ptr<ShopQueue> activeQueue;
+
   if (choice == "reg") {
-    ShopQueue shopQueue;
-    shopQueue.setMaxQueueSize(maxSize);
-    doQueueOperations(shopQueue);
+    activeQueue = std::make_unique<ShopQueue>();
   } else if (choice == "pri") {
-    ShopPriorityQueue shopPriorityQueue;
-    shopPriorityQueue.setMaxQueueSize(maxSize);
-    doQueueOperations(shopPriorityQueue);
+    activeQueue = std::make_unique<ShopPriorityQueue>();
   } 
+
+  if (activeQueue) {
+    activeQueue->setMaxQueueSize(maxSize);
+    doQueueOperations(*activeQueue);
+  }
   std::cout << "|||||||||||||||||||||||||||||||||||||||||||||\n";
 }
 
@@ -194,3 +197,4 @@ void doQueueOperations(T& queue) {
     std::cin >> choice;
   } while (choice == "c");
 }
+
