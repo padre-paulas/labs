@@ -152,5 +152,5 @@ int AVLTree::findCountByCharInner(Node *n, char ch) {
 }
 
 int AVLTree::findCountByChar(char ch) {
-  return findCountByCharInner(root, ch, 0);
+  return findCountByCharInner(root, ch);
 }
