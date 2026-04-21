@@ -1,112 +1,156 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 
-class Tree {
-  private: 
-    struct Node {
-      std::string word;
-      int key = 0;
-      int height = 0;
-      Node *left = nullptr;
-      Node *right = nullptr;
+class AVLTree {
+ private:
+  struct Node {
+    std::string word;
+    int key, height;
+    Node *left, *right;
+    Node(std::string w, int k);
+  };
 
-      Node(std::string word, int key) :
-        word(word), key(key) {};
-    };
+  Node* root = nullptr;
 
-    Node *root = nullptr;
-    void printInnerNode(Node *node);
-    void printInner(Node *root, int space);
-    void removeNodeInner(Node *node, int key);
-    void getHeight();
-  public:
-    void insert(std::string word, int key);
-    void print();
-    void removeNode(int key);
+  int height(Node* n);
+  Node* rotateRight(Node* y);
+  Node* rotateLeft(Node* x);
+  Node* rebalance(Node* n);
+  Node* insert(Node* n, std::string word, int key);
+  Node* remove(Node* n, int key);
+  void print(Node* n, int space);
+  int findCountByCharInner(Node *n, char ch, int count);
+
+ public:
+  AVLTree();
+  void insert(std::string word, int key);
+  void remove(int key);
+  void print();
+  int findCountByChar(char ch);
 };
 
-void demo();
-// void demo2();
+AVLTree::Node::Node(std::string w, int k)
+    : word(w), key(k), height(1), left(nullptr), right(nullptr) {}
+
+AVLTree::AVLTree() : root(nullptr) {}
+
+int AVLTree::height(Node* n) { return n ? n->height : 0; }
+
+AVLTree::Node* AVLTree::rotateRight(Node* y) {
+  Node* x = y->left;
+  y->left = x->right;
+  x->right = y;
+  y->height = 1 + std::max(height(y->left), height(y->right));
+  x->height = 1 + std::max(height(x->left), height(x->right));
+  return x;
+}
+
+AVLTree::Node* AVLTree::rotateLeft(Node* x) {
+  Node* y = x->right;
+  x->right = y->left;
+  y->left = x;
+  x->height = 1 + std::max(height(x->left), height(x->right));
+  y->height = 1 + std::max(height(y->left), height(y->right));
+  return y;
+}
+
+AVLTree::Node* AVLTree::rebalance(Node* n) {
+  n->height = 1 + std::max(height(n->left), height(n->right));
+  int bf = height(n->left) - height(n->right);
+
+  if (bf > 1) {
+    if (height(n->left->left) < height(n->left->right))
+      n->left = rotateLeft(n->left);
+    return rotateRight(n);
+  }
+  if (bf < -1) {
+    if (height(n->right->right) < height(n->right->left))
+      n->right = rotateRight(n->right);
+    return rotateLeft(n);
+  }
+  return n;
+}
+
+AVLTree::Node* AVLTree::insert(Node* n, std::string word, int key) {
+  if (!n) return new Node(word, key);
+  if (key < n->key)
+    n->left = insert(n->left, word, key);
+  else if (key > n->key)
+    n->right = insert(n->right, word, key);
+  return rebalance(n);
+}
+
+AVLTree::Node* AVLTree::remove(Node* n, int key) {
+  if (!n) return nullptr;
+  if (key < n->key)
+    n->left = remove(n->left, key);
+  else if (key > n->key)
+    n->right = remove(n->right, key);
+  else {
+    if (!n->left || !n->right) {
+      Node* child = n->left ? n->left : n->right;
+      delete n;
+      return child;
+    }
+    Node* s = n->right;
+    while (s->left) s = s->left;
+    n->key = s->key;
+    n->word = s->word;
+    n->right = remove(n->right, s->key);
+  }
+  return rebalance(n);
+}
+
+void AVLTree::print(Node* n, int space) {
+  if (!n) return;
+  print(n->right, space + 5);
+  std::cout << std::string(space, ' ') << "[" << n->key << "] " << n->word
+            << "\n";
+  print(n->left, space + 5);
+}
+
+void AVLTree::insert(std::string word, int key) {
+  root = insert(root, word, key);
+}
+void AVLTree::remove(int key) { root = remove(root, key); }
+void AVLTree::print() { print(root, 0); }
 
 int main() {
-  demo();
+  AVLTree tree;
+
+  tree.insert("banana", 30);
+  tree.insert("apple", 10);
+  tree.insert("apricot", 100);
+  tree.insert("cherry", 20);
+  tree.insert("date", 40);
+  tree.insert("strawberry", 50);
+  tree.insert("fig", 25);
+
+  tree.print();
+
+  tree.remove(30);
+  std::cout << "\n";
+  tree.print();
+
+  char ch;
+  std::cout << "Enter a char: ";
+  std::cin >> ch;
+
+  std::cout << "Count of nodes whose word starts with " << ch
+  << ": " << tree.findCountByChar(ch) << std::endl;
 
   return 0;
 }
 
-void demo() {
-  // Tree tree;
-  // tree.insert("IF (1 < 2) { say \"hi\" }", 1);
-  // tree.insert("THEN IF (4 > 2) { \"say \"what\" }", 2);
-  // tree.insert("ELSE { say \"hello\" }", 0);
-  // tree.insert("THEN IF (2 > 0) { say \"never\" }", 3);
-  // tree.insert("ELSE { say \"stop\" }", 3);
-  // tree.print();
-  // tree.removeNode(0);
-  // tree.print();
+int AVLTree::findCountByCharInner(Node *n, char ch, int count) {
+  if (n == nullptr) return 0;
+  count = findCountByCharInner(n->left, ch, count) +
+  findCountByCharInner(n->right, ch, count);
+  if (n->word[0] == ch) count++;
+  return count;
 }
 
-void Tree::printInnerNode(Node *node) {
-  std::cout << "Data: " << node->word;
-}
-
-void Tree::insert(std::string word, int key) {
-  if (root == nullptr) {
-    root = new Node(word, key);
-    return;
-  }
-  Node *current = root;
-  while (true) {
-    if (current->key < key) {
-      if (current->right == nullptr) {
-        current->right = new Node(word, key);
-        return;
-      }
-      current = current->right;
-    } else {
-      if (current->left == nullptr) {
-        current->left = new Node(word, key);
-        return;
-      }
-      current = current->left;
-    }
-  }
-}
-
-void Tree::print() {
-  std::cout << "-----------------\n";
-  printInner(root, 0);
-  std::cout << "-----------------\n";
-}
-
-void Tree::printInner(Node *current, int space) {
-  if (current == nullptr) return;
-  printInner(current->right, space + 10);
-  for (int i = 0; i < space; i++) std::cout << " ";
-  std::cout << current->word << std::endl;
-  printInner(current->left, space + 10);
-}
-
-void Tree::removeNode(int key) {
-  removeNodeInner(root, key);
-}
-
-void Tree::removeNodeInner(Node *node, int key) {
-  if (node->left->key == key) {
-    Node *temp = node->left;
-    node->left = nullptr;
-    delete temp;
-    return;
-  } else if (node->right->key == key) {
-    Node *temp = node->right;
-    node->right = nullptr;
-    delete temp;
-    return;
-  } else if (node->key < key) {
-    if (node->right == nullptr) return;
-    removeNodeInner(node->right, key);
-  } else {
-    if (node->left == nullptr) return;
-    removeNodeInner(node->left, key);
-  }
+int AVLTree::findCountByChar(char ch) {
+  return findCountByCharInner(root, ch, 0);
 }
