@@ -20,7 +20,7 @@ class AVLTree {
   Node* insert(Node* n, std::string word, int key);
   Node* remove(Node* n, int key);
   void print(Node* n, int space);
-  int findCountByCharInner(Node *n, char ch, int count);
+  int findCountByCharInner(Node *n, char ch);
 
  public:
   AVLTree();
@@ -143,10 +143,10 @@ int main() {
   return 0;
 }
 
-int AVLTree::findCountByCharInner(Node *n, char ch, int count) {
+int AVLTree::findCountByCharInner(Node *n, char ch) {
   if (n == nullptr) return 0;
-  count = findCountByCharInner(n->left, ch, count) +
-  findCountByCharInner(n->right, ch, count);
+  int count = findCountByCharInner(n->left, ch) +
+  findCountByCharInner(n->right, ch);
   if (n->word[0] == ch) count++;
   return count;
 }
