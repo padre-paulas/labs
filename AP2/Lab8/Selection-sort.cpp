@@ -12,7 +12,7 @@ void selectionSort(std::vector<int>& arr) {
 }
 
 int main() {
-  std::vector<int> arr = {64, 25, 12, 22, 11};
+  std::vector<int> arr = {64, 25, 12, 22, 11, 1, 1, 1, 1, -999, 1 ,1 ,1 ,1 ,9};
 
   selectionSort(arr);
 
